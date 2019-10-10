@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="vue.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #demo2>div {
+            width: 600px;
+            margin: 100px auto;
+
+        }
+
+       ul {
+            border: 1px solid #006699;
+        }
+
+        ul:nth-of-type(1) li {
+            width:120px;
+            line-height: 2em;
+            display: inline-block;
+            text-align: center;
+        }
+       ul:nth-of-type(n+2){
+            height: 200px;
+        }
+       ul:nth-of-type(n+2) li {
+           width: 50%;
+           line-height: 3em;
+           display: inline-block;
+           text-align: center;
+        }
+        .hoverbg{
+            background: #006699;
+
+        }
+    </style>
+</head>
+<body>
+<div id="demo2">
+    <tab :list="list1" :hover="hoverCls"></tab>
+    <tab :list="list2" :hover="hoverCls"></tab>
+</div>
+<script type="text/javascript">
+    Vue.component('tab', {
+        props: ['list', 'hover'],
+        template: `
+					<div>
+						<ul>
+							<li v-for="(item,index) in list" :class="item.show?hover:''" :key="index" @click="doClick(index)">
+								{{item.selected}}
+							</li>
+						</ul>
+						<ul v-show="item.show" v-for="(item,index) in list">
+							<li v-for="(value,key) in item.content">
+								{{value}}
+							</li>
+						</ul>
+					</div>
+				`,
+        methods: {
+            doClick(index) {
+                for (var i = 0; i < this.list.length; i++) {
+                    this.list[i].show = false
+                }
+                this.list[index].show = true
+            }
+        }
+    })
+    new Vue({
+        el: '#demo2',
+        data() {
+            return {
+                list1: [{
+                    selected: "选项卡1",
+                    content: ['这是选项卡1的内容'],
+                    show: true
+                },
+                    {
+                        selected: "选项卡2",
+                        content: ['这是选项卡2的内容'],
+                        show: false
+                    },
+                    {
+                        selected: "选项卡3",
+                        content: ['这是选项卡3的内容'],
+                        show: false
+                    }
+                ],
+                list2: [{
+                    selected: "京东",
+                    content: ['时令生鲜', '休闲零食', '营养保健','粮油调味'],
+                    show: false
+                },
+                    {
+                        selected: "数码电器",
+                        content:['电器1', '电器2', '电器3','电器4'],
+                        show: true
+                },
+                    {
+                        selected: "服饰美妆",
+                        content: ['外套', '裙子', '羽绒服','化妆品'],
+                        show: false
+                    },
+
+                    {
+                        selected: "京东生鲜",
+                        content: ['鱼类', '虾类', '蔬菜','水果'],
+                        show: false
+                    }
+                ],
+                hoverCls: 'hoverbg'
+            }
+        }
+    })
+</script>
+</body>
+</html>
